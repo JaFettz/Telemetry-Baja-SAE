@@ -5,6 +5,7 @@ from geopy import distance
 from math import sqrt, floor
 import numpy as np
 import pandas as pd
+import matplotlib as mpl
 from matplotlib.animation import FuncAnimation
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap, BoundaryNorm
@@ -23,21 +24,33 @@ def update(i):
 def plot(i):
     t = df['lon'][i]
     y = df['lat'][i]
-    print(t," ",y)
+    # print(t," ",y)
     xdata.append(t)
     ydata.append(y)
     xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
 
     if t >= xmax:
-        ax.set_xlim(xmin, 2*xmax)
+        ax.set_xlim(xmin, t+0.0001)
         ax.figure.canvas.draw()
+    if t <= xmin-0.0001 or t >= xmin-0.0001:
+        ax.set_xlim(t-0.0001,xmax)
+        ax.figure.canvas.draw()
+        
+    if y >= ymax:
+        ax.set_xlim(ymin, y+0.0001)
+        ax.figure.canvas.draw()
+    if y <= ymin-0.0001 or y >= ymin-0.0001:
+        ax.set_xlim(y-0.0001,ymax)
+        ax.figure.canvas.draw()
+
     line.set_data(xdata, ydata)
 
     return line,
 
 def init():
-    # ax.set_xlim(df['lon'].min() -.1, df['lon'].max() +.1 )
-    # ax.set_xlim(df['lat'].min() -.1, df['lat'].max() +.1 )
+    ax.set_xlim(df['lon'].min()-0.0001, df['lon'].max()+0.0001 )
+    ax.set_ylim(df['lat'].min()-0.0001, df['lat'].max()+0.0001 )
     print("min and max")
     print(df['lon'].min()," ",df['lon'].max())
     print(df['lat'].min()," ",df['lat'].max())
@@ -69,11 +82,13 @@ def gps_data(file):
 
 
 
+mpl.rcParams['toolbar'] = 'None'
+
 df = gps_data('gpsdata.gpx')
 
 fig, ax = plt.subplots(nrows=1, ncols=1)
 
-ax.plot(df['lon'], df['lat'],'#a6a6a6',linewidth=5.0)
+# ax.plot(df['lon'], df['lat'],'#a6a6a6',linewidth=5.0)
 
 
 # point, = ax.plot(df['lon'][0], df['lat'][0],'ro')
