@@ -1,2 +1,5 @@
 /.vscode
 .gitignore
+
+.ipynb_checkpoints
+__pycache__

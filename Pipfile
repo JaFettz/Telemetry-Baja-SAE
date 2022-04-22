@@ -9,6 +9,14 @@ pylint = "*"
 [packages]
 gpiozero = "*"
 smbus = "*"
+geopy = "*"
+gpxpy = "*"
+pandas = "*"
+numpy = "*"
+haversine = "*"
+matplotlib = "*"
+pipfile = "*"
+pyserial = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
