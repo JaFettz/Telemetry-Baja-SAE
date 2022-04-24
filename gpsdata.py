@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import gpxpy
 import matplotlib.pyplot as plt
 import datetime
@@ -13,6 +15,7 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 #import plotly.graph_objs as go
 #import haversine
 from itertools import count
+import staticmaps
 
 
 def update(i):
@@ -30,18 +33,24 @@ def plot(i):
     xmin, xmax = ax.get_xlim()
     ymin, ymax = ax.get_ylim()
 
-    if t >= xmax:
-        ax.set_xlim(xmin, t+0.0001)
+    if max(xdata) >= xmax:
+        print("t>=xmax")
+        xmax= t+0.0002
+        ax.set_xlim(xmin, xmax)
         ax.figure.canvas.draw()
-    if t <= xmin-0.0001 or t >= xmin-0.0001:
-        ax.set_xlim(t-0.0001,xmax)
+    if min(xdata) <= xmin-0.0001 or min(xdata) >= xmin+0.0001:
+        print("t>=xmin")
+        ax.set_xlim(t-0.0002,xmax)
         ax.figure.canvas.draw()
-        
-    if y >= ymax:
-        ax.set_xlim(ymin, y+0.0001)
+       
+    if max(ydata) >= ymax:
+        print("y>=ymax")
+        ymax= y+0.0002
+        ax.set_ylim(ymin, ymax)
         ax.figure.canvas.draw()
-    if y <= ymin-0.0001 or y >= ymin-0.0001:
-        ax.set_xlim(y-0.0001,ymax)
+    if min(ydata) <= ymin-0.0001 or min(ydata) >= ymin+0.0001:
+        print("y>=ymin")
+        ax.set_ylim(y-0.0002,ymax)
         ax.figure.canvas.draw()
 
     line.set_data(xdata, ydata)
@@ -49,8 +58,8 @@ def plot(i):
     return line,
 
 def init():
-    ax.set_xlim(df['lon'].min()-0.0001, df['lon'].max()+0.0001 )
-    ax.set_ylim(df['lat'].min()-0.0001, df['lat'].max()+0.0001 )
+    # ax.set_xlim(df['lon'].min()-0.0001, df['lon'].max()+0.0001 )
+    # ax.set_ylim(df['lat'].min()-0.0001, df['lat'].max()+0.0001 )
     print("min and max")
     print(df['lon'].min()," ",df['lon'].max())
     print(df['lat'].min()," ",df['lat'].max())
@@ -81,10 +90,23 @@ def gps_data(file):
 
 
 
+context = staticmaps.Context()
+context.set_tile_provider(staticmaps.tile_provider_OSM)
 
 mpl.rcParams['toolbar'] = 'None'
 
 df = gps_data('gpsdata.gpx')
+
+map = (df['lon'][:],df['lat'][:])
+
+print(map)
+
+
+center_lon = (df['lon'].max() - df['lon'].min()) / 2
+center_lat = (df['lat'].max() - df['lat'].min()) / 2
+
+print(center_lon," ", center_lat)
+print(center_lon+df['lon'].min()," ",center_lat+df['lat'].min())
 
 fig, ax = plt.subplots(nrows=1, ncols=1)
 

@@ -1,8 +1,15 @@
 from multiprocessing import Process,Pipe
 import time
 
+
+def test(msg):
+    print("inside test",msg)
+    x=8
+    
+
 def f(child_conn):
     Mode = True
+    y = x
     while Mode:
         last = "Nothing"
         for i in range(6):
@@ -13,8 +20,11 @@ def f(child_conn):
             print("internal data: ", i)
             time.sleep(1)
             print(last)
+            test(y)
             if last == "kill":
                 Mode = False
     print("internal closing")
     time.sleep(10)
     child_conn.close()
+
+x=6

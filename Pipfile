@@ -17,6 +17,7 @@ haversine = "*"
 matplotlib = "*"
 pipfile = "*"
 pyserial = "*"
+py-staticmaps = "*"
 
 [requires]
 python_version = "3.8"

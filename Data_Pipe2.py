@@ -5,10 +5,10 @@ import time
 if __name__ == '__main__':
     parent_conn,child_conn = Pipe()
     parent_conn_1,child_conn_2 = Pipe()
-    p = Process(target=f, args=(child_conn, 6))
-    p1 = Process(target=f, args=(child_conn_2, 7))
+    p = Process(target=f, args=(child_conn,))
+    # p1 = Process(target=f, args=(child_conn_2, 7))
     p.start()
-    p1.start()
+    # p1.start()
     try:
         print(parent_conn.recv())   # prints "Hello"
         print(parent_conn_1.recv())
